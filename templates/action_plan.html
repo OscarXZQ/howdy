@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Action Plan</title>
+  <style>
+    /* Sticky note styles */
+    .sticky-note {
+      position: relative;
+      display: inline-block;
+      width: 250px;
+      height: auto;
+      padding: 10px;
+      margin: 10px;
+      background-color: #ffefc0;
+      border: 1px solid #d4b445;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      cursor: pointer;
+      z-index: 2;
+    }
+
+    .sticky-note .stakeholder {
+      font-weight: bold;
+    }
+
+    .sticky-note .action {
+      margin-top: 5px;
+    }
+
+    .sticky-note .add-button {
+      display: block;
+      margin-top: 10px;
+      background-color: #E8C1A0;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .sticky-note .edit-buttons {
+      margin-top: 10px;
+    }
+
+    .sticky-note .edit-button,
+    .sticky-note .delete-button,
+    .sticky-note .save-button {
+      display: inline-block;
+      margin-right: 5px;
+      background-color: #E8C1A0;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .sticky-note .add-button:hover,
+    .sticky-note .edit-button:hover,
+    .sticky-note .delete-button:hover,
+    .sticky-note .save-button:hover {
+      background-color: #D99A78;
+    }
+
+    .sticky-note.own-action-item {
+      background-color: #C6E6C3;
+      border: 1px solid #8CC580;
+    }
+
+    .sticky-note.own-action-item .edit-button,
+    .sticky-note.own-action-item .delete-button {
+      background-color: #6ca37b;
+    }
+
+    .sticky-note.own-action-item .edit-button:hover,
+    .sticky-note.own-action-item .delete-button:hover {
+      background-color: #548060;
+    }
+
+    body, html {
+      height: 2000px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+    }
+    
+    #myActionItemsContainer {
+      flex: 70%;
+    }
+
+    #timelineContainer {
+      flex: 30%;
+      position: relative;
+      width: 100px;
+      height: 100%;
+    }
+
+    #timeline {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 100%;
+      background-color: #888;
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+  </style>
+</head>
+<body>
+  <h2>Timeline</h2>
+  <p>Please arrange the action items in a time order.</p>
+  <div class="container">
+    <div id="myActionItemsContainer">
+      {% for stakeholder, actions in new_survivor.action_plan.items() %}
+        {% for action in actions %}
+          <div class="sticky-note draggable">
+            <div class="stakeholder">{{ stakeholder }}</div>
+            <div class="action">{{ action }}</div>
+          </div>
+        {% endfor %}
+      {% endfor %}
+    </div>
+    <div id="timelineContainer">
+      <div id="timeline"></div>
+    </div>  
+  </div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const stickyNotes = document.getElementsByClassName('draggable');
+      const container = document.getElementById('myActionItemsContainer');
+      let activeNote = null;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      // Function to make a sticky note draggable
+      function makeStickyNoteDraggable(stickyNote) {
+        stickyNote.addEventListener('mousedown', startDragging);
+
+        function startDragging(event) {
+          event.preventDefault();
+          activeNote = stickyNote;
+          offsetX = event.clientX - activeNote.getBoundingClientRect().left;
+          offsetY = event.clientY - activeNote.getBoundingClientRect().top;
+
+          document.addEventListener('mousemove', dragStickyNote);
+          document.addEventListener('mouseup', stopDraggingStickyNote);
+        }
+
+        function dragStickyNote(event) {
+          event.preventDefault();
+          const x = event.clientX - offsetX - container.getBoundingClientRect().left;
+          const y = event.clientY - offsetY - container.getBoundingClientRect().top;
+          activeNote.style.transform = `translate(${x}px, ${y}px)`;
+        }
+
+        function stopDraggingStickyNote(event) {
+          document.removeEventListener('mousemove', dragStickyNote);
+          document.removeEventListener('mouseup', stopDraggingStickyNote);
+          activeNote = null;
+        }
+      }
+
+      // Initialize draggable behavior for all sticky notes
+      for (let i = 0; i < stickyNotes.length; i++) {
+        makeStickyNoteDraggable(stickyNotes[i]);
+      }
+    });
+  </script>
+</body>
+</html>

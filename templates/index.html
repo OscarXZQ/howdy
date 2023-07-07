@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Questions about survivor's harm case</title>
+</head>
+<body>
+  <h1>System Introduction</h1>
+  <p>Welcome to SnuggleSense! In this process, we will guide you through a series of questions related to a past online harm you have experienced. The purpose of this process is to help you develop an action plan to effectively address online harm.</p>
+  <p>For any inquiries regarding the system, please reach out to Sijia Xiao at <ins>xiaosijia@berkeley.edu</ins> or call 1-404-944-6506. If you require further assistance in addressing the harm, please click here for additional mental health resources.</p>
+
+  <h1>Reflection of Harm Case</h1>
+  <form id="quizForm" action="/submit" method="POST">
+    <label for="description">Please provide a brief description of the online interpersonal harm you experienced on social media. This will help us better understand the situation and assist you in finding a solution. (Please enter your description in the text box below.)</label><br><br>
+    <textarea id="description" name="description" style="width: 600px; height: 100px;"></textarea>
+    
+    <p>Please answer the questions below. We will provide recommendations gathered from individuals with similar experiences.</p>
+    <div id="questionsContainer"></div>
+
+    <h2>Feelings and Impact</h2>
+    <label for="feelings">Please describe your feelings immediately after experiencing the online interpersonal harm.</label><br><br>
+    <textarea id="feelings" name="feelings" style="width: 600px; height: 100px;"></textarea><br><br>
+    <label for="impact">Please describe how the event has impacted you after it occurred.</label><br><br>
+    <textarea id="impact" name="impact" style="width: 600px; height: 100px;"></textarea>
+
+    <h2>Stakeholders and Actions</h2>
+    <p>Stakeholders: Who can help you address the harm? (Please enter one individual or organization at a time in the text box below.)</p>
+    <p>Actions: What can they do? (Please enter one action item at a time in the text box below.)</p><br>
+    <label for="stakeholder">Stakeholder:</label>
+    <textarea id="stakeholder" name="stakeholder" style="width: 300px; height: 50px"></textarea>
+    <label for="action">Action:</label>
+    <textarea id="action" name="action" style="width: 600px; height: 50px;"></textarea>
+
+    <button type="button" onclick="addActionItem()">Add Action Item</button>
+
+    <h3>Action Items:</h3>
+    <ul id="actionItems"></ul>
+
+    <p>In the next step, you will see a recommendation of action plans from other survivors. It is based on your similarity with other survivors. Please choose the questions that are important to you when calculating the similarities.</p>
+    <div id="optionsContainer"></div>
+
+    <br>
+    <input type="hidden" id="actionItemsData" name="actionItemsData">
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+    const questions = [
+      {
+        question: "Please select all the options below that best describe the type(s) of harm you experienced:",
+        options: ["Offensive name-calling", "Purposeful embarrassment", "Stalking", "Physical threats", "Harassment over a sustained period of time", "Sexual harassment"]
+      },
+      {
+        question: "Please select all the options below that apply to where the harm occurred:",
+        options: ["In person", "In private online chat", "In public online chat"]
+      },
+      {
+        question: "Please select the option below that best reflects the number of individuals you believe have caused harm to you:",
+        options: ["One", "Multiple"]
+      },
+      {
+        question: "Please select all the options below that apply to your relationship with the individuals who caused the harm:",
+        options: ["Strangers", "Friends", "Acquaintances"]
+      }
+    ];
+
+    // Generate HTML for each question
+    const questionsContainer = document.getElementById("questionsContainer");
+
+    questions.forEach((q, index) => {
+      const questionHTML = `
+        <p>${index + 1}. ${q.question}</p>
+        ${q.options.map((option, optionIndex) => `
+          <input type="${(index === 2) ? 'radio' : 'checkbox'}" id="q${index + 1}-option${optionIndex + 1}" name="answer${index + 1}" value="${optionIndex}">
+          <label for="q${index + 1}-option${optionIndex + 1}">${option}</label><br>
+        `).join('')}
+        <br>
+      `;
+
+      questionsContainer.innerHTML += questionHTML;
+    });
+
+    // Action Plan
+    const actionItemsContainer = document.getElementById("actionItems");
+
+    function addActionItem() {
+      const stakeholderInput = document.getElementById("stakeholder");
+      const actionInput = document.getElementById("action");
+
+      const stakeholder = stakeholderInput.value.trim();
+      const action = actionInput.value.trim();
+
+      if (stakeholder !== "" && action !== "") {
+        const actionItem = document.createElement("li");
+        actionItem.textContent = `Stakeholder: ${stakeholder}, Action: ${action}`;
+        actionItemsContainer.appendChild(actionItem);
+
+        // Append stakeholder and action to hidden input field
+        const actionItemsDataInput = document.getElementById("actionItemsData");
+        const currentData = actionItemsDataInput.value;
+        const newData = `${currentData}\n${stakeholder}: ${action}`;
+        actionItemsDataInput.value = newData;
+
+        stakeholderInput.value = "";
+        actionInput.value = "";
+      }
+    }
+
+    // Important Questions
+    const optionsContainer = document.getElementById("optionsContainer");
+
+    const options = [
+        "Question 1",
+        "Question 2",
+        "Question 3",
+        "Question 4"
+    ];
+
+    options.forEach((option, index) => {
+      const optionHTML = `
+        <input type="checkbox" id="option${index + 1}" name="importantQuestions" value="option${index + 1}">
+        <label for="option${index + 1}">${option}</label><br>
+      `;
+  
+      optionsContainer.innerHTML += optionHTML;
+    });
+
+    // Text boxes
+    const quizForm = document.getElementById("quizForm");
+    quizForm.addEventListener("submit", function(event) {
+      // Get text box values
+      const descriptionValue = document.getElementById("description").value;
+      const feelingsValue = document.getElementById("feelings").value;
+      const impactValue = document.getElementById("impact").value;
+  
+      // Create hidden input fields to include the text box values in the form submission
+      const descriptionInput = document.createElement("input");
+      descriptionInput.type = "hidden";
+      descriptionInput.name = "description";
+      descriptionInput.value = descriptionValue;
+  
+      const feelingsInput = document.createElement("input");
+      feelingsInput.type = "hidden";
+      feelingsInput.name = "feelings";
+      feelingsInput.value = feelingsValue;
+  
+      constimpactInput = document.createElement("input");
+      impactInput.type = "hidden";
+      impactInput.name = "impact";
+      impactInput.value = impactValue;
+  
+      // Append the hidden input fields to the form
+      this.appendChild(descriptionInput);
+      this.appendChild(feelingsInput);
+      this.appendChild(impactInput);
+  
+      // Submit the form
+      this.submit();
+    });
+
+  </script>
+</body>
+</html>

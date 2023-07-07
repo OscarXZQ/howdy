@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Recommended Action Items</title>
+  <style>
+    /* Sticky note styles */
+    .sticky-note {
+      position: relative;
+      display: inline-block;
+      width: 250px;
+      height: auto;
+      padding: 10px;
+      margin: 10px;
+      background-color: #ffefc0;
+      border: 1px solid #d4b445;
+      border-radius: 10px;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .sticky-note .stakeholder {
+      font-weight: bold;
+    }
+
+    .sticky-note .action {
+      margin-top: 5px;
+    }
+
+    .sticky-note .add-button {
+      display: block;
+      margin-top: 10px;
+      background-color: #E8C1A0;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .sticky-note .edit-buttons {
+      margin-top: 10px;
+    }
+
+    .sticky-note .edit-button,
+    .sticky-note .delete-button,
+    .sticky-note .save-button {
+      display: inline-block;
+      margin-right: 5px;
+      background-color: #E8C1A0;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .sticky-note .add-button:hover,
+    .sticky-note .edit-button:hover,
+    .sticky-note .delete-button:hover,
+    .sticky-note .save-button:hover {
+      background-color: #D99A78;
+    }
+
+    .sticky-note.own-action-item {
+      background-color: #C6E6C3;
+      border: 1px solid #8CC580;
+    }
+
+    .sticky-note.own-action-item .edit-button,
+    .sticky-note.own-action-item .delete-button {
+      background-color: #6ca37b;
+    }
+
+    .sticky-note.own-action-item .edit-button:hover,
+    .sticky-note.own-action-item .delete-button:hover {
+      background-color: #548060;
+    }
+
+    .sticky-note .edit-mode .action {
+      display: none;
+    }
+
+    .sticky-note .edit-mode .input-field {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: none;
+      padding: 0;
+      margin: 0;
+      resize: none;
+      font-size: inherit;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .pagination {
+      margin-top: 10px;
+    }
+
+    .pagination-button {
+      margin: 5px;
+      background-color: #E8C1A0;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .pagination-button:hover {
+      background-color: #D99A78;
+    }
+
+    .pagination button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <h2>Recommended Action Items</h2>
+  <div id="sameStakeholderContainer">
+    {% set pageSize = 4 %}
+    {% set recommendedItems = recommended_items.from_same_stakeholder %}
+    {% set totalPages = (recommendedItems|length + pageSize - 1) // pageSize %}
+    {% for pageIndex in range(totalPages) %}
+      <div class="page" data-page="{{ pageIndex + 1 }}" {% if pageIndex > 0 %}style="display: none;"{% endif %}>
+        {% for stakeholder, action in recommendedItems[pageSize * pageIndex : (pageSize * (pageIndex + 1)) if (pageSize * (pageIndex + 1)) <= recommendedItems|length else recommendedItems|length] %}
+          <div class="sticky-note">
+            <div class="stakeholder">{{ stakeholder }}</div>
+            <div class="action">{{ action }}</div>
+            <button class="add-button" onclick="addToActionPlan('{{ stakeholder.replace("'", "\\'").replace('"', '\\"') }}', '{{ action.replace("'", "\\'").replace('"', '\\"') }}')">add to my action plan</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+  <div class="pagination">
+    <button class="pagination-button" onclick="previousPage()" id="prevButton" disabled>Back</button>
+    <button class="pagination-button" onclick="nextPage()" id="nextButton" {% if totalPages == 1 %}disabled{% endif %}>Next</button>
+  </div>
+
+  <h2>My Own Action Items</h2>
+  <p> Feel free to add your own action items or choose from the recommendations above!</p>
+  <div id="addActionItemContainer">
+    <textarea id="stakeholderInput" placeholder="Stakeholder" style="width: 300px; height: 50px"></textarea>
+    <textarea id="actionInput" placeholder="Action" style="width: 600px; height: 50px;"></textarea>
+    <button id="addButton" onclick="addActionItem()">add</button>
+  </div>  
+  <div id="myActionItemsContainer">
+    {% for stakeholder, actions in new_survivor.action_plan.items() %}
+      {% for action in actions %}
+        <div class="sticky-note own-action-item">
+          <div class="stakeholder">{{ stakeholder }}</div>
+          <div class="action">{{ action }}</div>
+          <div class="edit-buttons">
+            <button class="edit-button" onclick="toggleEditMode(this)">edit</button>
+            <button class="delete-button" onclick="deleteActionItem(this)">delete</button>
+          </div>
+        </div>
+      {% endfor %}
+    {% endfor %}
+  </div>
+
+  <button onclick="finishedAddingActionItems()">finished adding action items</button>
+
+  <div id="updatedActionPlanContainer"></div>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+
+    // Function to handle adding action items to the survivor's action plan
+    function addToActionPlan(stakeholder, action) {
+      const myActionItemsContainer = d3.select("#myActionItemsContainer");
+
+      // Create a new sticky note with the selected action item
+      const newStickyNote = myActionItemsContainer.append("div")
+        .attr("class", "sticky-note");
+
+      newStickyNote.append("div")
+        .attr("class", "stakeholder")
+        .text(stakeholder);
+
+      newStickyNote.append("div")
+        .attr("class", "action")
+        .text(action);
+
+      newStickyNote.append("div")
+        .attr("class", "edit-buttons")
+        .html(`
+          <button class="edit-button" onclick="toggleEditMode(this)">edit</button>
+          <button class="delete-button" onclick="deleteActionItem(this)">delete</button>
+        `);
+    }
+
+    // Function to add a new action item to "My Own Action Items"
+    function addActionItem() {
+      const stakeholderInput = document.getElementById("stakeholderInput");
+      const actionInput = document.getElementById("actionInput");
+      const stakeholder = stakeholderInput.value;
+      const action = actionInput.value;
+
+      if (stakeholder && action) {
+        const myActionItemsContainer = d3.select("#myActionItemsContainer");
+
+        // Create a new sticky note with the entered action item
+        const newStickyNote = myActionItemsContainer.append("div")
+          .attr("class", "sticky-note own-action-item");
+
+        newStickyNote.append("div")
+          .attr("class", "stakeholder")
+          .text(stakeholder);
+
+        newStickyNote.append("div")
+          .attr("class", "action")
+          .text(action);
+
+        newStickyNote.append("div")
+          .attr("class", "edit-buttons")
+          .html(`
+            <button class="edit-button" onclick="toggleEditMode(this)">edit</button>
+            <button class="delete-button" onclick="deleteActionItem(this)">delete</button>
+          `);
+
+        // Clear the input fields
+        stakeholderInput.value = "";
+        actionInput.value = "";
+      }
+    }
+
+    // Function to handle deleting action items from the survivor's action plan
+    function deleteActionItem(button) {
+      const stickyNote = d3.select(button.parentNode.parentNode);
+      stickyNote.remove();
+    }
+
+    // Function to toggle edit mode for the selected action item
+    function toggleEditMode(button) {
+      const stickyNote = d3.select(button.parentNode.parentNode);
+      const actionElement = stickyNote.select(".action");
+      const editButton = stickyNote.select(".edit-button");
+
+      if (stickyNote.classed("edit-mode")) {
+        // Save the edited action item
+        const inputField = actionElement.select(".input-field");
+        const updatedAction = inputField.property("value");
+        actionElement.text(updatedAction);
+        editButton.text("edit");
+      } else {
+        // Enter edit mode
+        const actionText = actionElement.text();
+        actionElement.html(`
+          <textarea class="input-field">${actionText}</textarea>
+        `);
+        editButton.text("save");
+      }
+
+      // Toggle the edit mode class
+      stickyNote.classed("edit-mode", !stickyNote.classed("edit-mode"));
+    }
+
+    // Function to handle finished adding action items
+    function finishedAddingActionItems() {
+      const myActionItems = Array.from(document.querySelectorAll("#myActionItemsContainer .sticky-note")).map(function (element) {
+        const stakeholder = element.querySelector(".stakeholder").textContent;
+        const action = element.querySelector(".action").textContent;
+        return { stakeholder: stakeholder, action: action };
+      });
+
+      // Send the updated action plan to the server
+      fetch("/update_action_plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action_plan: myActionItems })
+      }).then(function (response) {
+        if (response.ok) {
+          response.text().then(function (data) {
+            // Display the updated action plan
+            const updatedActionPlanContainer = d3.select("#updatedActionPlanContainer");
+            updatedActionPlanContainer.html(data);
+          });
+        } else {
+          console.error("Failed to update action plan.");
+        }
+      }).catch(function (error) {
+        console.error("Error:", error);
+      });
+
+      // Redirect to the action plan page
+      window.location.href = "/action_plan";
+    }
+
+    // Function to show the previous page
+    function previousPage() {
+      const pages = document.getElementsByClassName("page");
+      const currentPage = document.querySelector(".page:not([style='display: none;'])");
+      const currentPageIndex = parseInt(currentPage.dataset.page);
+      const prevPageIndex = currentPageIndex - 2;
+      const prevPage = pages[prevPageIndex];
+
+      currentPage.style.display = "none";
+      prevPage.style.display = "block";
+
+      const nextButton = document.getElementById("nextButton");
+      nextButton.disabled = false;
+
+      if (prevPageIndex === 0) {
+        const prevButton = document.getElementById("prevButton");
+        prevButton.disabled = true;
+      }
+    }
+
+    // Function to show the next page
+    function nextPage() {
+      const pages = document.getElementsByClassName("page");
+      const currentPage = document.querySelector(".page:not([style='display: none;'])");
+      const currentPageIndex = parseInt(currentPage.dataset.page);
+      const nextPageIndex = currentPageIndex;
+      const nextPage = pages[nextPageIndex];
+
+      currentPage.style.display = "none";
+      nextPage.style.display = "block";
+
+      const prevButton = document.getElementById("prevButton");
+      prevButton.disabled = false;
+
+      if (nextPageIndex === pages.length - 1) {
+        const nextButton = document.getElementById("nextButton");
+        nextButton.disabled = true;
+      }
+    }
+  </script>
+</body>
+</html>

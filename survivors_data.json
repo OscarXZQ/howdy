@@ -1,0 +1,324 @@
+[
+    {
+        "answers": [
+            [
+                0,
+                1,
+                5
+            ],
+            [
+                1,
+                2
+            ],
+            1,
+            [
+                0,
+                1
+            ]
+        ],
+        "action_plan": {
+            "offender": [
+                "this is how you made me feel, and this is how i interpreted the situation. please understand my side",
+                "apology and clear the air"
+            ],
+            "counselor": [
+                "it's not a pick one side, equality for feelings and understanding for both sides"
+            ],
+            "friends and family": [
+                "help and advice and a person to listen to me rant, and help me come up with a plan of action"
+            ]
+        },
+        "important_questions": [
+            0,
+            1,
+            2,
+            3
+        ],
+        "description": "",
+        "feelings": "",
+        "impact": ""
+    },
+    {
+        "answers": [
+            [
+                2,
+                3,
+                4
+            ],
+            [
+                0,
+                1,
+                2
+            ],
+            0,
+            [
+                2
+            ]
+        ],
+        "action_plan": {
+            "offender": [
+                "What made this person say the things they said? What issues are causing them to harm others?",
+                "How this person made me feel, and why what they did was hurtful.",
+                "An apology, but more importantly, to have the offender understand what they've done is hurtful and inappropriate",
+                "Hopefully the offender can realize that even online, words have meaning and can be hurtful to others"
+            ],
+            "the public": [
+                "Support and understanding that the offender was being hateful and that the victim is not at fault",
+                "Reassurance"
+            ],
+            "online community members": [
+                "Support and understanding that the offender was being hateful and that the victim is not at fault",
+                "Reassurance"
+            ],
+            "friends and family": [
+                "The interaction and how it has affected me",
+                "Support and understanding that the offender was being hateful and that the victim is not at fault",
+                "Advice, reassurance, just someone to listen"
+            ],
+            "platform and moderators": [
+                "What actions are developers taking to reduce the risks of cyberbullying?",
+                "The interaction and how it has affected me",
+                "Assurance that the platform is taking action to reduce cyberbullying"
+            ],
+            "myself": [
+                "Do I need to seek further help to recover from this interaction? If so, who?",
+                "Pay more attention to who I'm responding to and interacting with online. Choosing whether or not to engage with another person online"
+            ]
+        },
+        "important_questions": [
+            0,
+            1
+        ],
+        "description": "",
+        "feelings": "",
+        "impact": ""
+    },
+    {
+        "answers": [
+            [
+                1,
+                2,
+                5
+            ],
+            [
+                2
+            ],
+            1,
+            [
+                1
+            ]
+        ],
+        "action_plan": {
+            "offender": [
+                "why do they want to do the harmful action at that time",
+                "understand that they did the wrong things and realize that they should avoid it in the future",
+                "apology, understand that what they've done was wrong and avoid it in the future",
+                "avoid the same harmful events in the future and the creation of more victims"
+            ],
+            "friends and family": [
+                "the harmful things that I experienced and how I feel",
+                "understand my situation, try to protect their family and friends from those harmful events",
+                "support and reassurance"
+            ],
+            "online community members": [
+                "the harmful experience and how I feel as an victim",
+                "know that they should never do such harmful things to surrounding individuals",
+                "support and reassurance"
+            ],
+            "platform and moderators": [
+                "delete the comments and give the instagram user who posted disrespectful comments some warning"
+            ]
+        },
+        "important_questions": [
+            1,
+            2,
+            4
+        ],
+        "description": "",
+        "feelings": "",
+        "impact": ""
+    },
+    {
+        "answers": [
+            [
+                0
+            ],
+            [
+                1,
+                2
+            ],
+            0,
+            [
+                0
+            ]
+        ],
+        "action_plan": {
+            "platform and moderators": [
+                "I think twitter should ban accounts that are perpetrating racist harm more frequently- although they do have a policy, too often are these accounts allowed to stay on the platform",
+                "more banning and investigation of harmful accounts that spew hate speech and racism online"
+            ],
+            "offender": [
+                "I think the acknowledgment/understanding I want is one that recognizes why their comments were harmful and rooted in racist sentments",
+                "I think an apology and ammends are needed, some of these accounts not only harmed me, but other friends and people I know online as well"
+            ],
+            "online community members": [
+                "this community as a whole should understand that listening to indigenous voices is imperative and should be working to hold their community member accountable both online and offline",
+                "i would like to see this community educating themselves more and uplifting Indigenous peoples rather than invalidating our experiences"
+            ],
+            "the public": [
+                "racism and anti-indigenous sentiments exist both in person and online. It's important to hold ourselves and online community members accountable to prevent people from marginalized communities from being harmed on social media platforms like twitter"
+            ],
+            "friends and family": [
+                "although its not the responsibility of friends and family to repair the harms, I think we should understand that friend and family presence are needed during these instances to help express tour feelingss and offer support to one another."
+            ]
+        },
+        "important_questions": [
+            2,
+            3
+        ],
+        "description": "",
+        "feelings": "",
+        "impact": ""
+    },
+    {
+        "answers": [
+            [
+                3,
+                4
+            ],
+            [
+                0,
+                2
+            ],
+            0,
+            [
+                0,
+                1
+            ]
+        ],
+        "action_plan": {
+            "offender": [
+                "get information about why they posted what they posted",
+                "share my feelings about the situation",
+                "reach an agreement on why I am uncomfortable",
+                "apology and remove post",
+                "in the future, I want them to think before they post or permission to post"
+            ],
+            "friends and family": [
+                "share my feelings about the situation",
+                "be acknowledged and understood that my feelings are valid"
+            ],
+            "platform and moderators": [
+                "remove post"
+            ]
+        },
+        "important_questions": [
+            0,
+            1,
+            2,
+            3
+        ],
+        "description": "",
+        "feelings": "",
+        "impact": ""
+    },
+    {
+        "answers": [
+            [
+                1,
+                3,
+                5
+            ],
+            [
+                1
+            ],
+            0,
+            [
+                1
+            ]
+        ],
+        "action_plan": {
+            "friends and family": [
+                "get personal advice on how to deal with the situation",
+                "share my feelings and emotions",
+                "receive empathy and emotional support",
+                "be a source of emotional consolation",
+                "help and advice and a person to listen to me rant, and help me come up with a plan of action",
+                "although its not the responsibility of friends and family to repair the harms, I think we should understand that friend and family presence are needed during these instances to help express tour feelingss and offer support to one another."
+            ],
+            "platform and moderators": [
+                "Get information about policies for harmful content",
+                "Inform them about the comments and photos posted",
+                "Comments to be removed from the platform",
+                "Remove the comments and hate photos",
+                "In the future, I want it to be more proactive when it comes to hate speech"
+            ],
+            "school": [
+                "Learn about tips for people of my age to deal with bullying and hateful comments",
+                "I want to share an overview of situation, who is involved and responsible",
+                "Acknowledge the problem and agree to take action",
+                "Talk with the offenders and tell them to stop doing it",
+                "Educate students about bullying and hate speech"
+            ],
+            "online community members": [
+                "i would like to see this community educating themselves more and uplifting Indigenous peoples rather than invalidating our experiences"
+            ],
+            "the public": [
+                "racism and anti-indigenous sentiments exist both in person and online. It's important to hold ourselves and online community members accountable to prevent people from marginalized communities from being harmed on social media platforms like twitter"
+            ]
+        },
+        "important_questions": [
+            1,
+            3
+        ],
+        "description": "",
+        "feelings": "",
+        "impact": ""
+    },
+    {
+        "answers": [
+            [
+                1,
+                2
+            ],
+            [
+                0
+            ],
+            0,
+            [
+                1,
+                2
+            ]
+        ],
+        "action_plan": {
+            "friends and family": [
+                "Share my feelings and how it affects me and my daily life",
+                "I want to receive comfort and sympathy",
+                "Support and understanding"
+            ],
+            "online community members": [
+                "I want online community members to educate themselves on the current situations",
+                "Support and understanding that the offender was being hateful and that the victim is not at fault",
+                "Share how this affects my daily life"
+            ],
+            "platform and moderators": [
+                "I want the platform to recognize what's going on and realize that they need to do better in the future.I want the platform to recognize what's going on and realize that they need to do better in the future",
+                "What actions are developers taking to reduce the risks of cyberbullying?",
+                "The interaction and how it has affected me"
+            ],
+            "the public": [
+                "Support and understanding that the offender was being hateful and that the victim is not at fault"
+            ],
+            "offender": [
+                "understand that they did the wrong things and realize that they should avoid it in the future"
+            ]
+        },
+        "important_questions": [
+            1,
+            2
+        ],
+        "description": "",
+        "feelings": "",
+        "impact": ""
+    }
+]
